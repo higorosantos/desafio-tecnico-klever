@@ -1,0 +1,31 @@
+services:
+  app:
+    container_name: desafio-tecnico
+    depends_on:
+      - redis
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  redis:
+    container_name: redis
+    image: bitnami/redis
+    expose:
+      - 6379
+    environment:
+      - REDIS_PASSWORD={TESTE}
+    networks:
+      - app-network
+    volumes:
+      - redis-data:/data
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis-data:

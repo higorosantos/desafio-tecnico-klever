@@ -5,6 +5,7 @@ declare global {
             API_COIN_ENDPOINT:string,
             API_COIN_TOKEN:string,
             API_PORT: number;
+            TESTE: string;
         }
     }
 }
