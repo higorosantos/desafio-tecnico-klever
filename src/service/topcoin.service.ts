@@ -1,21 +1,71 @@
-import axios from 'axios';
+import { CoinGeckoResponse } from "../model/CoinGecko/response.model";
+import TopCoin from "../model/topcoin.model";
+import CoinGeckoService from "./coingecko.service";
+import CurrencyService from "./currency.service";
+import RedisService from "./redis.service";
 
 class TopCoinService {
 
-    constructor(){}
+    coinGeckoService:CoinGeckoService;
+    redisService:RedisService;
+    currencyService:CurrencyService;
 
-    async getTopCoinFromApi() {
-    
-        const url = `${process.env.API_COIN_BASE_URL}${process.env.API_COIN_ENDPOINT}`
-        
-        const coinList = await axios.get(url, {params: { "vs_currency": "USD","order":"market_cap_desc","per_page":10 } , headers: { "x-cg-api-key" : process.env.API_COIN_TOKEN}}).then((response)=> {
-            return response.data;
-        }).catch(()=> {
+    constructor(){
+        this.coinGeckoService = new CoinGeckoService();
+        this.redisService = new RedisService();
+        this.currencyService = new CurrencyService();
 
-        })
-
-        return coinList; 
     }
+
+    async getTopCoins(currency:string): Promise<TopCoin[]>{
+    
+        const topCoins = await this.getCoinFromCacheOrApi();        
+        
+        if (!topCoins) return [];
+
+        return this.formatData(topCoins, currency); 
+    }
+
+
+    private async getCoinFromCacheOrApi(){
+        const redisData = await this.redisService.getAll<CoinGeckoResponse[]>("topCoins");
+
+        if(redisData){
+            return redisData;
+        }
+
+        //SE NÃO TIVER NO REDIS
+        const topCoins = await this.coinGeckoService.getCoins(10, "USD");
+
+        if (!topCoins) return null;
+
+        this.redisService.set<TopCoin[]>("topCoins", topCoins);
+
+        return topCoins;
+
+    }
+
+    private async formatData(reponseApi:CoinGeckoResponse[], currency:string):Promise<TopCoin[]>{ 
+
+
+        const quoteRate:number | null = await this.currencyService.getQuoteRate("USD", currency.toUpperCase());
+
+
+        if(!quoteRate) throw new Error("Erro ao converter moeda");
+
+        const formatted: TopCoin[] = reponseApi.map((coin: CoinGeckoResponse) => ({
+            id: coin.id,
+            name: coin.name,
+            symbol: coin.symbol,
+            currency: currency.toUpperCase(),
+            price: coin.current_price * quoteRate,
+            market_cap: coin.market_cap * quoteRate,
+          }));
+
+          return formatted;
+        
+    }
+
 }
 
 
