@@ -63,6 +63,7 @@ class TopCoinService {
 
     private async formatData(reponseApi:CoinGeckoResponse[], currency:string):Promise<TopCoin[]>{ 
 
+        if(!currency) currency = "USD";
 
         const quoteRate:number = await this.currencyService.getQuoteRate("USD", currency.toUpperCase());
 
