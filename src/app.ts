@@ -5,7 +5,7 @@ import router from "./routes/coin.routes";
 
 const app:Application = Express();
 app.use(Express.json());
-app.use(router);
+app.use('/api', router);
 app.use(httpError);
 
 export default app;

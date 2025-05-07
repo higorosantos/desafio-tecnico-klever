@@ -16,8 +16,8 @@ const socketServer:SocketServer = new SocketServer(httpServer);
 cron.schedule('* * * * *', async ()=> {
     try {
         await topCoinService.updateRedis();
-        const topcoins:TopCoin[] = await topCoinService.getTopCoins("USD")
-        socketServer.emitToAll("updatedTopCoins", { ...topcoins })
+        const data:TopCoin[] = await topCoinService.getTopCoins("USD")
+        socketServer.emitToAll("updatedTopCoins", data)
         console.log("Redis Atualizado!")
     }catch(e){
         console.error("Erro ao atualizar o cache do redis!", e);

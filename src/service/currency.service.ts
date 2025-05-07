@@ -8,6 +8,10 @@ class CurrencyService {
 
     async getQuoteRate(currencyFrom: string, currencyTo: string): Promise<number> {
 
+        if(currencyFrom == currencyTo){
+            return 1;
+        }
+
         const params = {
             "access_key": process.env.API_CONVERT_CURRENCY_TOKEN,
             "from": currencyFrom,
