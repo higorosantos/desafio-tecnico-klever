@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "tsx --env-file=.env --watch ./src/main.ts",
     "build": "tsc --build",
     "start": "node ./dist/main.js"
@@ -13,15 +13,23 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@grpc/grpc-js": "^1.13.3",
     "axios": "^1.9.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "install": "^0.13.0",
-    "ioredis": "^5.6.1"
+    "ioredis": "^5.6.1",
+    "node-cron": "^3.0.3",
+    "ws": "^8.18.2"
   },
   "devDependencies": {
     "@types/axios": "^0.9.36",
     "@types/express": "^5.0.1",
+    "@types/jest": "^29.5.14",
+    "@types/node-cron": "^3.0.11",
+    "@types/ws": "^8.18.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.2",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   }

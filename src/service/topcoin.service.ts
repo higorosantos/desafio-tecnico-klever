@@ -6,9 +6,9 @@ import RedisService from "./redis.service";
 
 class TopCoinService {
 
-    coinGeckoService:CoinGeckoService;
-    redisService:RedisService;
-    currencyService:CurrencyService;
+    private coinGeckoService:CoinGeckoService;
+    private redisService:RedisService;
+    private currencyService:CurrencyService;
 
     private REDIS_TTL = process.env.REDIS_TTL;
 
@@ -29,8 +29,24 @@ class TopCoinService {
     }
 
 
+    async updateRedis(){
+
+        try {
+            const topCoins:CoinGeckoResponse[] = await this.coinGeckoService.getCoins(10, "USD");
+
+            if(topCoins.length == 0) return [];
+    
+            await this.redisService.set("topCoins", topCoins, this.REDIS_TTL);
+
+        }catch(e){
+            throw Error("Falha ao atualizar o cache");
+        }
+      
+
+    }
+
     private async getCoinFromCacheOrApi(){
-        const redisData = await this.redisService.getAll<CoinGeckoResponse[]>("topCoins");
+        const redisData = await this.redisService.get<CoinGeckoResponse[]>("topCoins");
 
         if(redisData){
             return redisData;

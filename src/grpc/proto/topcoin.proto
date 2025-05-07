@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+service TopCoinService {
+  rpc GetTopCoins (TopCoinRequest) returns (TopCoinResponse);
+}
+
+message TopCoinRequest {
+  string currency = 1;
+}
+
+message TopCoinResponse {
+  repeated TopCoin coins = 1;
+}
+
+message TopCoin {
+  string id = 1;
+  string name = 2;
+  string symbol = 3;
+  string currency = 4;
+  double price = 5;
+  double market_cap = 6;
+}

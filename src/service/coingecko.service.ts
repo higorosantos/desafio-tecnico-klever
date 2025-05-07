@@ -1,6 +1,5 @@
 import axios from 'axios';
-import HttpException from '../utils/HttpException';
-import { response } from 'express';
+
 
 
 class CoinGeckoService {

@@ -1,15 +1,15 @@
 services:
-  # app:
-  #   container_name: desafio-tecnico
-  #   depends_on:
-  #     - redis
-  #   build: .
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - app-network
+  app:
+    container_name: desafio-tecnico
+    depends_on:
+      - redis
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
 
   redis:
     container_name: redis
@@ -17,7 +17,7 @@ services:
     ports:
      - "6379:6379"
     environment:
-      - REDIS_PASSWORD=TESTE
+      - ALLOW_EMPTY_PASSWORD=yes
     networks:
       - app-network
     volumes:
