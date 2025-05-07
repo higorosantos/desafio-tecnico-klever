@@ -27,7 +27,7 @@ Este projeto é uma API REST com suporte a WebSocket para monitoramento de cript
 ## Configuração
 
 1. Clone o repositório
-2. Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+2. Altera o `.env` na raiz do projeto nas seguintes variáveis:
 ```env
 COINGECKO_API_KEY=sua_chave_api_coingecko
 CONTEXT_LAYER_API_KEY=sua_chave_api_context_layer
