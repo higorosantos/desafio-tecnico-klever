@@ -1,5 +1,8 @@
 interface CurrencyConvertResponse {
     success: boolean;
+    error?: {
+      code:""
+    },
     terms: string;
     privacy: string;
     query: {

@@ -10,6 +10,8 @@ class TopCoinService {
     redisService:RedisService;
     currencyService:CurrencyService;
 
+    private REDIS_TTL = process.env.REDIS_TTL;
+
     constructor(){
         this.coinGeckoService = new CoinGeckoService();
         this.redisService = new RedisService();
@@ -37,9 +39,7 @@ class TopCoinService {
         //SE NÃO TIVER NO REDIS
         const topCoins = await this.coinGeckoService.getCoins(10, "USD");
 
-        if (!topCoins) return null;
-
-        this.redisService.set<TopCoin[]>("topCoins", topCoins);
+        this.redisService.set<TopCoin[]>("topCoins", topCoins, this.REDIS_TTL);
 
         return topCoins;
 
@@ -48,10 +48,7 @@ class TopCoinService {
     private async formatData(reponseApi:CoinGeckoResponse[], currency:string):Promise<TopCoin[]>{ 
 
 
-        const quoteRate:number | null = await this.currencyService.getQuoteRate("USD", currency.toUpperCase());
-
-
-        if(!quoteRate) throw new Error("Erro ao converter moeda");
+        const quoteRate:number = await this.currencyService.getQuoteRate("USD", currency.toUpperCase());
 
         const formatted: TopCoin[] = reponseApi.map((coin: CoinGeckoResponse) => ({
             id: coin.id,
