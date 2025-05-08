@@ -5,8 +5,6 @@ Este projeto é uma API REST com suporte a WebSocket para monitoramento de cript
 ## Tecnologias Utilizadas
 
 - **Backend**: Node.js com TypeScript
-- **Framework**: Express.js
-- **WebSocket**: Biblioteca WS
 - **Cache**: Redis
 - **Containerização**: Docker e Docker Compose
 
@@ -28,7 +26,7 @@ Este projeto é uma API REST com suporte a WebSocket para monitoramento de cript
 ## Configuração
 
 1. Clone o repositório
-2. Crie altera `.env` na raiz do projeto alterando as seguintes variáveis:
+2. Acesse o `.env` na raiz do projeto e altere as seguintes variáveis:
 ```env
 COINGECKO_API_KEY=sua_chave_api_coingecko
 CONTEXT_LAYER_API_KEY=sua_chave_api_context_layer
