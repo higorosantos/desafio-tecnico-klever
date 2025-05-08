@@ -18,6 +18,7 @@ Este projeto é uma API REST com suporte a WebSocket para monitoramento de cript
 - `axios`: Cliente HTTP para requisições
 - `node-cron`: Agendamento de tarefas
 - `cors`: Middleware para CORS
+- `@grpc/grpc-js` Implementação GRPC
 
 ## Pré-requisitos
 - Git
@@ -27,7 +28,7 @@ Este projeto é uma API REST com suporte a WebSocket para monitoramento de cript
 ## Configuração
 
 1. Clone o repositório
-2. Altera o `.env` na raiz do projeto nas seguintes variáveis:
+2. Crie altera `.env` na raiz do projeto alterando as seguintes variáveis:
 ```env
 COINGECKO_API_KEY=sua_chave_api_coingecko
 CONTEXT_LAYER_API_KEY=sua_chave_api_context_layer
@@ -43,6 +44,7 @@ docker-compose up -d
 2. A API estará disponível em:
    - API REST: http://localhost:8080/api
    - WebSocket: ws://localhost:8080
+   - GRPC : http://localhost:50051
 
 ## Endpoints da API
 
@@ -57,7 +59,6 @@ Parâmetros de Query:
 Exemplo de resposta:
 ```json
 {
-  "success": true,
   "data": [
     {
       "id": "bitcoin",
@@ -78,12 +79,40 @@ Conecte-se ao WebSocket em `ws://localhost:8080` para receber atualizações em 
 Exemplo de mensagem recebida:
 ```json
 {
-  "type": "price_update",
-  "data": {
-    "coin": "bitcoin",
-    "price": 50000,
-    "timestamp": "2024-03-20T10:00:00Z"
-  }
+    "event": "updatedTopCoins",
+    "data": [
+        {
+            "id": "bitcoin",
+            "name": "Bitcoin",
+            "symbol": "btc",
+            "currency": "USD",
+            "price": 98034,
+            "market_cap": 1946497890743
+        },
+    ]
+}
+```
+
+
+## GRPC
+
+Conecte-se ao servidor em `http://localhost:50051`.
+Importe o .proto que esta dentro de grpc/proto/topcoin.proto.
+Execute a função GetTopCoins.
+
+Exemplo de mensagem recebida:
+```json
+{
+    "coins": [
+        {
+            "id": "bitcoin",
+            "name": "Bitcoin",
+            "symbol": "btc",
+            "currency": "USD",
+            "price": 97834,
+            "market_cap": 1943127015546
+        },
+    ]
 }
 ```
 
@@ -96,6 +125,7 @@ Exemplo de mensagem recebida:
 │   ├── config/
 │   ├── controller/
 │   ├── middleware/
+│   ├── grpc/
 │   ├── model/
 │   ├── routes/
 │   ├── routes/
