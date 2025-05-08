@@ -9,16 +9,14 @@ class SocketServer {
     this.wsServer = new WebSocketServer({ server });
 
     this.wsServer.on('connection', (socket: WebSocket) => {
-      console.log('Cliente conectado');
       this.clients.add(socket);
 
       socket.on('close', () => {
-        console.log('Cliente desconectado');
         this.clients.delete(socket);
       });
     });
   }
-  
+
   public emitToAll(event: string, data: any) {
     const payload = JSON.stringify({ event, data });
     for (const client of this.clients) {
