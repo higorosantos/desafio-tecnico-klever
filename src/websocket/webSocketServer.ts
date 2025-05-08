@@ -18,11 +18,7 @@ class SocketServer {
       });
     });
   }
-
-  public init() {
-    console.log('Servidor WebSocket iniciado!');
-  }
-
+  
   public emitToAll(event: string, data: any) {
     const payload = JSON.stringify({ event, data });
     for (const client of this.clients) {

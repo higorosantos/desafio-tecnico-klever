@@ -4,13 +4,14 @@ import TopCoinService from './service/topcoin.service';
 import SocketServer from './websocket/webSocketServer';
 import http from 'http';
 import TopCoin from './model/topcoin.model';
+import { GrpcServer } from './grpc/grpcServer';
 
 const API_PORT = process.env.API_PORT || 3000;
 
 const httpServer =  http.createServer(app);
 const topCoinService:TopCoinService = new TopCoinService();
 const socketServer:SocketServer = new SocketServer(httpServer);
-
+const grpcServer = new GrpcServer();
 
 //Iniciando o Agendador
 cron.schedule('* * * * *', async ()=> {
@@ -27,7 +28,9 @@ cron.schedule('* * * * *', async ()=> {
 
 
 //Iniciando WS
-socketServer.init();
+
+//Iniciando GRPC
+grpcServer.start();
 
 //Iniciando a API 
 httpServer.listen(API_PORT, () => {

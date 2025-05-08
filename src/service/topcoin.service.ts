@@ -16,7 +16,6 @@ class TopCoinService {
         this.coinGeckoService = new CoinGeckoService();
         this.redisService = new RedisService();
         this.currencyService = new CurrencyService();
-
     }
 
     async getTopCoins(currency:string): Promise<TopCoin[]>{

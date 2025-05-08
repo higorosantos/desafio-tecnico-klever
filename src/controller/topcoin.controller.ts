@@ -4,7 +4,7 @@ import TopCoin from "../model/topcoin.model";
 
 class TopCoinController {
 
-    topCoinService: TopCoinService;
+    private topCoinService: TopCoinService;
 
     constructor() {
         this.topCoinService = new TopCoinService();
